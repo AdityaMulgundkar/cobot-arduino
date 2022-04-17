@@ -29,6 +29,7 @@ struct can_frame canMsg;
 MCP2515 mcp2515(10);
 
 int incomingByte = 1;
+bool readyFlag = false;
 
 void setup()
 {
@@ -55,42 +56,68 @@ void loop()
 {
   canMsg.can_id = 0x141;
   canMsg.can_dlc = 0x08;
+  
+  unsigned char readMotorStatus[8] = {0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+  unsigned char ReadCurrentKp[8] = {0x34, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+  unsigned char ReadCurrentKi[8] = {0x35, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+  
+  if(Serial.available()>0) {
+    Serial.println("Begin: ");
+    incomingByte = Serial.read();
+    incomingByte = incomingByte - 0x30; // "1" -> 1
 
-  unsigned char charset[8] = {0x9A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-  for(int i = 0; i<8; i++) {
-    canMsg.data[i] = charset[i];
-  }
-
-  Serial.print("Send(1): ");
-
-  mcp2515.sendMessage(&canMsg);
-  printserial(canMsg.can_id, canMsg.data);
-  Serial.print("\n");
-  int len = 10;
-  while ((mcp2515.readMessage(&canMsg) != MCP2515::ERROR_OK))
-  {
-    delay(1);
-    len--;
-    if ((len <= 0))
-    {
-      break;
+    if(incomingByte==1){
+      for(int i = 0; i<8; i++) {
+        canMsg.data[i] = readMotorStatus[i];
+      }
     }
-  }
-
-  if (len > 0)
-  {
-    Serial.print("Recv   : ");
-    printserial(canMsg.can_id, canMsg.data);
-    Serial.print("\n");
-  }
-  else
-  {
-    Serial.print("Recv   : NO ANSWER");
-    Serial.print("\n");
-  }
-
-  Serial.print("\n");
-
+    else if(incomingByte==2){
+      for(int i = 0; i<8; i++) {
+        canMsg.data[i] = ReadCurrentKp[i];
+      }
+    }
+    else if(incomingByte==3){
+      for(int i = 0; i<8; i++) {
+        canMsg.data[i] = ReadCurrentKi[i];
+      }
+    }
+    else {
+      // nothing
+    }
+    readyFlag = true;
     delay(100);
-  Serial.print("\n");
+  }
+
+  if(readyFlag) {
+      Serial.print("Send(1): ");
+      mcp2515.sendMessage(&canMsg);
+      printserial(canMsg.can_id, canMsg.data);
+      Serial.print("\n");
+      int len = 10;
+      while ((mcp2515.readMessage(&canMsg) != MCP2515::ERROR_OK))
+      {
+        delay(100);
+        len--;
+        if ((len <= 0))
+        {
+          break;
+        }
+        readyFlag = false;
+      }
+        if (len > 0)
+        {
+          Serial.print("Recv   : ");
+          printserial(canMsg.can_id, canMsg.data);
+          Serial.print("\n");
+        }
+        else
+        {
+          Serial.print("Recv   : NO ANSWER");
+          Serial.print("\n");
+        }
+  }
+
+
+  
+
 }
