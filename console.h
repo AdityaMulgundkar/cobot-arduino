@@ -1,4 +1,4 @@
-#define DEBUG_MODE false
+#define DEBUG_MODE true
 
 class console {
 
@@ -18,6 +18,21 @@ class console {
       if (Serial) {
         Serial.print(value);
         Serial.println(value2);
+      }
+#endif
+    }
+
+    void log(unsigned long value, unsigned char value2[8]) {
+#if defined(DEBUG_MODE) && (DEBUG_MODE == true)
+      if (Serial) {
+          Serial.print(value, HEX);
+          Serial.print(": ");
+          for (int i = 0; i < 8; i++)
+          {
+            Serial.print(value2[i], HEX);
+            Serial.print("  ");
+          }
+          Serial.println("");
       }
 #endif
     }
