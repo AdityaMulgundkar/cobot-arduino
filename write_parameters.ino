@@ -30,4 +30,8 @@ unsigned char write_parameters(String s1, String s2)
     // Current and Ki
     return writeCurrentKi;
   }
+  else if (s1 == "T") {
+    // Torque
+    return setTorque;
+  }
 }

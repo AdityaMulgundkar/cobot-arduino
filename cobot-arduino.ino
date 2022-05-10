@@ -9,12 +9,16 @@
   Sample packet:
   RC1,KP // Read Current KP for Motor 1
   SC1,KP,0.1 // Read Current KP for Motor 1
+  SC1,Kp,1RC1,KP,0.001
+  SC1,Ki,0
+  ST
 */
 
 #include <SPI.h>     //Library for using SPI Communication
 #include <mcp2515.h> //Library for using CAN Communication
 #include "console.h"
 #include "bytetofloat.h"
+#include "bytetoint.h"
 
 #define SERIAL_BAUD_RATE 115200
 #define SERIAL_TIMEOUT 300
@@ -43,6 +47,8 @@ unsigned char writeSpeedKi = 0x39;
 
 unsigned char writeCurrentKp = 0x3A;
 unsigned char writeCurrentKi = 0x3B;
+
+unsigned char setTorque = 0xA2;
 
 // CAN IDs FOR MOTORS
 #define M1_CAN 0x141
