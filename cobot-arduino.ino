@@ -4,6 +4,14 @@
 
   TO-DOs:
   1. Wrap Final Serial output
+  
+  Rishabhs TODOs:
+  1. Torque feedback
+  2. Position feedback
+  3. Velocity feedback
+  4. Home position - get and set
+  5. ROS Serial
+  6. Tele-op
 
 
   Sample packet:
