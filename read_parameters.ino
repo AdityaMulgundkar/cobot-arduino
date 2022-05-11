@@ -2,7 +2,7 @@ unsigned char read_parameters(String s1, String s2)
 {
   // Sample packet
   // RC1,KP,0.001
-//  ST1,KP,0.001 WORKING
+  // ST1,KP,0.001 WORKING
   // SC1,Kp,0.25
   // SC1,Ki,0.25
   // ST,

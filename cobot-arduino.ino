@@ -56,7 +56,7 @@ unsigned char writeSpeedKi = 0x39;
 unsigned char writeCurrentKp = 0x3A;
 unsigned char writeCurrentKi = 0x3B;
 
-unsigned char setTorque = 0xA2;
+unsigned char setTorque = 0xA1;
 
 // CAN IDs FOR MOTORS
 #define M1_CAN 0x141
