@@ -1,7 +1,7 @@
 void read_command()
 {
   // Sample packet
-//  SC1,KP,0.001
+  //  SC1,KP,0.001
   // RC1,KP,0.001
   // SC1,Kp,0.25
   // SC1,Ki,0.25
@@ -123,8 +123,8 @@ void read_command()
       canMsg.data[1] = 0x00;
       canMsg.data[2] = 0x00;
       canMsg.data[3] = 0x00;
-      canMsg.data[4] = 0x64;
-      canMsg.data[5] = 0x00;
+      canMsg.data[4] = V.byteArray[1];
+      canMsg.data[5] = V.byteArray[0];
       canMsg.data[6] = 0x00;
       canMsg.data[7] = 0x00;
     }
